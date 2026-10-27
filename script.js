@@ -1,82 +1,278 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
 
-// Form submission
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+const products = [
+  {id:'smartwatches',name:'Smartwatches',group:'Wearables',caption:'Time, with a twist.',description:'Explore smartwatches that bring your daily essentials to your wrist.',emoji:'⌚',bg:'#dce6ce',art:'watch'},
+  {id:'earbuds',name:'Earbuds',group:'Audio',caption:'Tune into your day.',description:'Discover earbuds for music, calls and everything in between.',emoji:'♫',bg:'#e2e8e1',art:'earbuds'},
+  {id:'powerbanks',name:'Power Banks',group:'Power',caption:'Power on the move.',description:'Explore portable power banks for busy days and long journeys.',emoji:'ϟ',bg:'#d9e5e5',art:'power'},
+  {id:'datacables',name:'Data Cables',group:'Everyday',caption:'Stay connected.',description:'Browse charging and data cables for your everyday connections.',emoji:'↝',bg:'#e8e3d7',art:'cable'},
+  {id:'chargers',name:'Chargers',group:'Power',caption:'Ready to recharge.',description:'Find chargers to keep your devices ready for the day.',emoji:'⚡',bg:'#e1e6d8',art:'charger'},
+  {id:'adapters',name:'Adapters',group:'Everyday',caption:'Connect with ease.',description:'Explore handy adapters for everyday tech setups.',emoji:'▣',bg:'#e6e5df',art:'adapter'},
+  {id:'speakers',name:'Speakers',group:'Audio',caption:'Turn the volume up.',description:'Discover speakers to take your sound wherever you go.',emoji:'◉',bg:'#d7dfd3',art:'speaker'},
+  {id:'covers',name:'Mobile Covers',group:'Style',caption:'Make it your own.',description:'Explore mobile covers that add personality and everyday protection.',emoji:'▯',bg:'#d6e1da',art:'cover'}
+];
 
-    // Get form values
-    const name = this.querySelector('input[type="text"]').value;
-    const email = this.querySelector('input[type="email"]').value;
-    const message = this.querySelector('textarea').value;
-
-    // Simple validation
-    if (name.trim() === '' || email.trim() === '' || message.trim() === '') {
-        alert('Please fill in all fields');
-        return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address');
-        return;
-    }
-
-    // Log form data (in real application, you would send this to a server)
-    console.log('Form submitted:', {
-        name: name,
-        email: email,
-        message: message
-    });
-
-    // Show success message
-    alert('Thank you! Your message has been sent successfully.');
-
-    // Reset form
-    this.reset();
-});
-
-// Add scroll effect to navbar
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)';
-    } else {
-        navbar.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
-    }
-});
-
-// Animate elements on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+const art = {
+  watch:`<div class="art-object watch-object"><div class="watch-strap"></div><div class="watch-face"><div class="watch-time">09<span>41</span></div><div class="watch-dot"></div></div></div>`,
+  earbuds:`<div class="art-object buds-object"><div class="earbud one"></div><div class="earbud two"></div><div class="buds-case"></div></div>`,
+  power:`<div class="art-object power-object"><div class="power-body"></div><span class="power-logo">x.</span></div>`,
+  cable:`<div class="art-object cable-object"><div class="cable-loop"></div><div class="cable-tail"></div><div class="cable-plug"></div></div>`,
+  charger:`<div class="art-object charger-object"><div class="charger-pin left"></div><div class="charger-pin right"></div><div class="charger-body"></div></div>`,
+  adapter:`<div class="art-object adapter-object"><div class="adapter-body"></div><div class="adapter-socket"></div></div>`,
+  speaker:`<div class="art-object speaker-object"><div class="speaker-body"></div><div class="speaker-grill"></div><div class="speaker-mark">x.</div><div class="speaker-top"></div></div>`,
+  cover:`<div class="art-object cover-object"><div class="cover-shell"></div><div class="cover-camera"><i></i><i></i></div></div>`
 };
 
-const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
+const artwork = key => `<div class="art-root" aria-hidden="true">${art[key]}</div>`;
 
-// Observe service cards for animation
-document.querySelectorAll('.service-card').forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(card);
+const heartIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 8.5c0 4.3-8.7 10.4-8.7 10.4S3.3 12.8 3.3 8.5A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.7 2.3Z"/></svg>`;
+
+const productGrid=document.querySelector('#productGrid');
+const categoryStrip=document.querySelector('#categoryStrip');
+const filters=document.querySelector('#filters');
+const searchInput=document.querySelector('#searchInput');
+const emptyState=document.querySelector('#emptyState');
+const favoritesCount=document.querySelector('#favoritesCount');
+const productDialog=document.querySelector('#productDialog');
+const bagDialog=document.querySelector('#bagDialog');
+
+let activeGroup='All';
+let favoritesOnly=false;
+let saved=new Set();
+
+try {
+  saved=new Set(JSON.parse(localStorage.getItem('xcess-favorites')||'[]'));
+} catch {}
+
+document.querySelector('#heroWatch').innerHTML=artwork('watch');
+document.querySelector('#heroEarbuds').innerHTML=artwork('earbuds');
+document.querySelector('#year').textContent=new Date().getFullYear();
+
+function updateFavoritesCount(){
+  favoritesCount.textContent=saved.size;
+  favoritesCount.hidden=saved.size===0;
+
+  const button=document.querySelector('#favoritesToggle');
+  button.setAttribute('aria-pressed',String(favoritesOnly));
+  button.title=favoritesOnly?'Show all categories':'Show saved favorites';
+}
+
+function renderFilters(){
+  const groups=['All','Audio','Power','Wearables','Everyday','Style'];
+
+  filters.innerHTML=groups.map(group=>`
+    <button
+      class="filter-button ${activeGroup===group?'is-active':''}"
+      data-filter="${group}"
+      aria-pressed="${activeGroup===group}">
+      ${group}
+    </button>
+  `).join('');
+}
+
+function renderProducts(){
+  const term=searchInput.value.trim().toLowerCase();
+
+  const visible=products.filter(p=>
+    (activeGroup==='All'||p.group===activeGroup)
+    &&(!favoritesOnly||saved.has(p.id))
+    &&(`${p.name} ${p.group} ${p.caption}`.toLowerCase().includes(term))
+  );
+
+  productGrid.innerHTML=visible.map((p,index)=>`
+    <article class="product-card" data-id="${p.id}" style="--card-bg:${p.bg}">
+      <div class="product-media">
+        <span class="product-topline">
+          ${String(index+1).padStart(2,'0')} / ${p.group.toUpperCase()}
+        </span>
+
+        <button
+          class="heart-button ${saved.has(p.id)?'is-saved':''}"
+          data-save="${p.id}"
+          aria-label="${saved.has(p.id)?'Remove':'Save'} ${p.name} ${saved.has(p.id)?'from':'to'} favorites"
+          aria-pressed="${saved.has(p.id)}">
+          ${heartIcon}
+        </button>
+
+        ${artwork(p.art)}
+      </div>
+
+      <div class="product-info">
+        <div>
+          <h3>${p.name}</h3>
+          <p>${p.caption}</p>
+        </div>
+
+        <button
+          class="explore-button"
+          data-open="${p.id}"
+          aria-label="Explore ${p.name}">
+          ↗
+        </button>
+      </div>
+    </article>
+  `).join('');
+
+  emptyState.hidden=visible.length>0;
+
+  setupTilt();
+  updateFavoritesCount();
+}
+
+categoryStrip.innerHTML=products.map(p=>`
+  <button class="category-tile" data-category="${p.id}">
+    <span class="category-icon" aria-hidden="true">${p.emoji}</span>
+
+    <span>
+      <strong>${p.name}</strong>
+      <small>${p.group}</small>
+    </span>
+
+    <span class="arrow" aria-hidden="true">↗</span>
+  </button>
+`).join('');
+
+filters.addEventListener('click',e=>{
+  const button=e.target.closest('[data-filter]');
+  if(!button)return;
+
+  activeGroup=button.dataset.filter;
+  favoritesOnly=false;
+
+  renderFilters();
+  renderProducts();
 });
+
+searchInput.addEventListener('input',renderProducts);
+
+categoryStrip.addEventListener('click',e=>{
+  const button=e.target.closest('[data-category]');
+  if(!button)return;
+
+  const item=products.find(p=>p.id===button.dataset.category);
+
+  activeGroup='All';
+  favoritesOnly=false;
+  searchInput.value=item.name;
+
+  renderFilters();
+  renderProducts();
+
+  document.querySelector('#collection').scrollIntoView({behavior:'smooth'});
+});
+
+productGrid.addEventListener('click',e=>{
+  const save=e.target.closest('[data-save]');
+
+  if(save){
+    const id=save.dataset.save;
+
+    saved.has(id)?saved.delete(id):saved.add(id);
+
+    try {
+      localStorage.setItem('xcess-favorites',JSON.stringify([...saved]));
+    } catch {}
+
+    renderProducts();
+    return;
+  }
+
+  const open=e.target.closest('[data-open]');
+
+  if(open)openProduct(open.dataset.open);
+});
+
+function openProduct(id){
+  const p=products.find(item=>item.id===id);
+  if(!p)return;
+
+  document.querySelector('#dialogTitle').textContent=p.name;
+  document.querySelector('#dialogDescription').textContent=p.description;
+  document.querySelector('#dialogVisual').style.background=p.bg;
+  document.querySelector('#dialogVisual').innerHTML=artwork(p.art);
+
+  productDialog.showModal();
+}
+
+document.querySelector('#favoritesToggle').addEventListener('click',()=>{
+  favoritesOnly=!favoritesOnly;
+  activeGroup='All';
+  searchInput.value='';
+
+  renderFilters();
+  renderProducts();
+
+  document.querySelector('#collection').scrollIntoView({behavior:'smooth'});
+});
+
+document.querySelector('#bagToggle').addEventListener('click',()=>{
+  bagDialog.showModal();
+});
+
+document.querySelector('#searchToggle').addEventListener('click',()=>{
+  document.querySelector('#collection').scrollIntoView({behavior:'smooth'});
+  searchInput.focus({preventScroll:true});
+});
+
+document.querySelectorAll('[data-close]').forEach(button=>
+  button.addEventListener('click',()=>
+    button.closest('dialog').close()
+  )
+);
+
+document.querySelectorAll('dialog').forEach(dialog=>
+  dialog.addEventListener('click',e=>{
+    if(e.target===dialog)dialog.close();
+  })
+);
+
+const menuToggle=document.querySelector('#menuToggle');
+const mobileNav=document.querySelector('#mobileNav');
+
+menuToggle.addEventListener('click',()=>{
+  mobileNav.hidden=!mobileNav.hidden;
+  menuToggle.setAttribute('aria-expanded',String(!mobileNav.hidden));
+});
+
+mobileNav.querySelectorAll('a').forEach(a=>
+  a.addEventListener('click',()=>{
+    mobileNav.hidden=true;
+    menuToggle.setAttribute('aria-expanded','false');
+  })
+);
+
+document.addEventListener('keydown',e=>{
+  if(
+    e.key==='/' &&
+    document.activeElement!==searchInput &&
+    !e.ctrlKey &&
+    !e.metaKey
+  ){
+    e.preventDefault();
+    document.querySelector('#searchToggle').click();
+  }
+});
+
+function setupTilt(){
+  if(window.matchMedia('(hover:none), (prefers-reduced-motion:reduce)').matches)return;
+
+  productGrid.querySelectorAll('.product-card').forEach(card=>{
+    card.addEventListener('pointermove',e=>{
+      const rect=card.getBoundingClientRect();
+      const x=(e.clientX-rect.left)/rect.width-.5;
+      const y=(e.clientY-rect.top)/rect.height-.5;
+
+      card.style.transform=`
+        perspective(900px)
+        rotateX(${-y*7}deg)
+        rotateY(${x*7}deg)
+        translateY(-5px)
+      `;
+    });
+
+    card.addEventListener('pointerleave',()=>{
+      card.style.transform='';
+    });
+  });
+}
+
+renderFilters();
+renderProducts();
