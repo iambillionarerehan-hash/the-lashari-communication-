@@ -3,10 +3,11 @@ const products = [
   {id:'smartwatches',name:'Smartwatches',group:'Wearables',caption:'Time, with a twist.',description:'Explore smartwatches that bring your daily essentials to your wrist.',emoji:'⌚',bg:'#dce6ce',art:'watch'},
   {id:'earbuds',name:'Earbuds',group:'Audio',caption:'Tune into your day.',description:'Discover earbuds for music, calls and everything in between.',emoji:'♫',bg:'#e2e8e1',art:'earbuds'},
   {id:'powerbanks',name:'Power Banks',group:'Power',caption:'Power on the move.',description:'Explore portable power banks for busy days and long journeys.',emoji:'ϟ',bg:'#d9e5e5',art:'power'},
-  {id:'datacables',name:'Data Cables',group:'Everyday',caption:'Stay connected.',description:'Browse charging and data cables for your everyday connections.',emoji:'↝',bg:'#e8e3d7',art:'cable'},
-  {id:'chargers',name:'Chargers',group:'Power',caption:'Ready to recharge.',description:'Find chargers to keep your devices ready for the day.',emoji:'⚡',bg:'#e1e6d8',art:'charger'},
+  {id:'wirelesschargers',name:'Wireless Chargers',group:'Power',caption:'Drop it. Charge it.',description:'Explore wireless charging pads and stands for effortless power-ups.',emoji:'◎',bg:'#dfe3df',art:'wireless'},
+  {id:'cableschargers',name:'Cables & Chargers',group:'Everyday',caption:'Stay powered up.',description:'Browse charging cables and wall chargers for your everyday connections.',emoji:'↝',bg:'#e8e3d7',art:'cable'},
   {id:'adapters',name:'Adapters',group:'Everyday',caption:'Connect with ease.',description:'Explore handy adapters for everyday tech setups.',emoji:'▣',bg:'#e6e5df',art:'adapter'},
   {id:'speakers',name:'Speakers',group:'Audio',caption:'Turn the volume up.',description:'Discover speakers to take your sound wherever you go.',emoji:'◉',bg:'#d7dfd3',art:'speaker'},
+  {id:'ringlight',name:'LED Ring Light',group:'Style',caption:'Light up your shot.',description:'Explore LED ring lights with stands for perfect content and calls.',emoji:'◯',bg:'#e9ece2',art:'ringlight'},
   {id:'covers',name:'Mobile Covers',group:'Style',caption:'Make it your own.',description:'Explore mobile covers that add personality and everyday protection.',emoji:'▯',bg:'#d6e1da',art:'cover'}
 ];
 
@@ -16,8 +17,10 @@ const art = {
   power:`<div class="art-object power-object"><div class="power-body"></div><span class="power-logo">x.</span></div>`,
   cable:`<div class="art-object cable-object"><div class="cable-loop"></div><div class="cable-tail"></div><div class="cable-plug"></div></div>`,
   charger:`<div class="art-object charger-object"><div class="charger-pin left"></div><div class="charger-pin right"></div><div class="charger-body"></div></div>`,
+  wireless:`<div class="art-object wireless-object"><div class="wireless-phone"><div class="wireless-phone-notch"></div></div><div class="wireless-pad"><div class="wireless-pad-ring"></div></div></div>`,
   adapter:`<div class="art-object adapter-object"><div class="adapter-body"></div><div class="adapter-socket"></div></div>`,
   speaker:`<div class="art-object speaker-object"><div class="speaker-body"></div><div class="speaker-grill"></div><div class="speaker-mark">x.</div><div class="speaker-top"></div></div>`,
+  ringlight:`<div class="art-object ringlight-object"><div class="ringlight-stand"></div><div class="ringlight-ring"><div class="ringlight-phone"></div></div></div>`,
   cover:`<div class="art-object cover-object"><div class="cover-shell"></div><div class="cover-camera"><i></i><i></i></div></div>`
 };
 

@@ -792,6 +792,106 @@ svg {
   background: #c9d1cf;
 }
 
+/* WIRELESS CHARGER */
+.wireless-object { width: 190px; height: 190px; transform: rotate(-16deg) rotateY(-14deg); }
+.wireless-pad {
+  position: absolute;
+  left: 14px;
+  bottom: 6px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #3a4440, #15191b 65%, #05070a);
+  box-shadow: inset 6px 6px 10px #ffffff1c, 13px 20px 22px #0006;
+}
+.wireless-pad-ring {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 2px solid #6c8b0d80;
+  box-shadow: inset 0 0 18px #d8ff5530;
+}
+.wireless-pad-ring:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d8ff55;
+  box-shadow: 0 0 12px 3px #d8ff5590;
+}
+.wireless-phone {
+  position: absolute;
+  left: 30px;
+  top: -6px;
+  width: 118px;
+  height: 150px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #eef4ee, #aebfc0 55%, #7b9290);
+  box-shadow: inset 0 0 0 3px #ffffff80, 10px 16px 18px #1c2b2650;
+  z-index: 2;
+}
+.wireless-phone-notch {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 7px;
+  border-radius: 5px;
+  background: #5c6b68;
+}
+
+/* LED RING LIGHT */
+.ringlight-object { width: 150px; height: 215px; transform: rotate(-14deg) rotateY(-12deg); }
+.ringlight-stand {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 6px;
+  height: 150px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #3b4440, #1a201d);
+  border-radius: 3px;
+  box-shadow: 8px 10px 14px #0004;
+}
+.ringlight-stand:before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 10px;
+  border-radius: 50%;
+  background: #23282533;
+  filter: blur(4px);
+}
+.ringlight-ring {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  border: 17px solid #e9ffcf;
+  background: radial-gradient(circle, transparent 56%, #ffffff8c 58%, transparent 62%);
+  box-shadow: 0 0 30px 6px #d8ff5560, inset 0 0 20px #ffffffa0, 10px 14px 16px #1c2b2640;
+}
+.ringlight-phone {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 32px;
+  height: 58px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2b332f, #10140f);
+  box-shadow: inset 0 0 0 2px #4d5a52;
+}
+
 /* CHARGER */
 .charger-object { width: 154px; height: 155px; transform: rotate(-18deg) rotateY(-15deg); }
 .charger-body {
