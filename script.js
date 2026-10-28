@@ -115,6 +115,18 @@ function renderProducts(){
 
   setupTilt();
   updateFavoritesCount();
+  revealNewCards();
+}
+
+function revealNewCards(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+
+  productGrid.querySelectorAll('.product-card').forEach((card,i)=>{
+    card.classList.add('reveal');
+    requestAnimationFrame(()=>{
+      setTimeout(()=>card.classList.add('in-view'), i*35);
+    });
+  });
 }
 
 categoryStrip.innerHTML=products.map(p=>`
@@ -164,14 +176,17 @@ productGrid.addEventListener('click',e=>{
 
   if(save){
     const id=save.dataset.save;
+    const item=products.find(p=>p.id===id);
+    const wasSaved=saved.has(id);
 
-    saved.has(id)?saved.delete(id):saved.add(id);
+    wasSaved?saved.delete(id):saved.add(id);
 
     try {
       localStorage.setItem('xcess-favorites',JSON.stringify([...saved]));
     } catch {}
 
     renderProducts();
+    showToast(wasSaved?`Removed ${item.name} from favorites`:`Saved ${item.name} to favorites ✓`);
     return;
   }
 
@@ -188,8 +203,30 @@ function openProduct(id){
   document.querySelector('#dialogDescription').textContent=p.description;
   document.querySelector('#dialogVisual').style.background=p.bg;
   document.querySelector('#dialogVisual').innerHTML=artwork(p.art);
+  document.querySelector('#dialogDone').dataset.notify=p.name;
 
   productDialog.showModal();
+}
+
+function showToast(message){
+  let toast=document.querySelector('#toast');
+
+  if(!toast){
+    toast=document.createElement('div');
+    toast.id='toast';
+    toast.className='toast';
+    toast.setAttribute('role','status');
+    toast.setAttribute('aria-live','polite');
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent=message;
+  toast.classList.remove('toast-show');
+  void toast.offsetWidth;
+  toast.classList.add('toast-show');
+
+  clearTimeout(showToast._timer);
+  showToast._timer=setTimeout(()=>toast.classList.remove('toast-show'),2600);
 }
 
 document.querySelector('#favoritesToggle').addEventListener('click',()=>{
@@ -203,7 +240,16 @@ document.querySelector('#favoritesToggle').addEventListener('click',()=>{
   document.querySelector('#collection').scrollIntoView({behavior:'smooth'});
 });
 
-document.querySelector('#bagToggle').addEventListener('click',()=>{
+const bagButton=document.querySelector('#bagToggle');
+const bagCountEl=bagButton.querySelector('.bag-count');
+let bagCount=0;
+
+try {
+  bagCount=parseInt(localStorage.getItem('xcess-bag-count')||'0',10)||0;
+  bagCountEl.textContent=bagCount;
+} catch {}
+
+bagButton.addEventListener('click',()=>{
   bagDialog.showModal();
 });
 
@@ -272,6 +318,57 @@ function setupTilt(){
       card.style.transform='';
     });
   });
+}
+
+document.querySelector('#dialogDone')?.addEventListener('click',e=>{
+  const name=e.currentTarget.dataset.notify;
+  if(name)showToast(`We'll let you know when ${name} is ready ✓`);
+});
+
+/* SCROLL REVEAL */
+const revealTargets=document.querySelectorAll(
+  '.category-tile, .editorial-grid, .closing-section'
+);
+
+if('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  const revealObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+
+  revealTargets.forEach(el=>{
+    el.classList.add('reveal');
+    revealObserver.observe(el);
+  });
+} else {
+  revealTargets.forEach(el=>el.classList.add('in-view'));
+}
+
+/* ACTIVE NAV LINK ON SCROLL */
+const navLinks=document.querySelectorAll('.desktop-nav a, .mobile-nav a');
+const sections=['collection','categories','about']
+  .map(id=>document.getElementById(id))
+  .filter(Boolean);
+
+if('IntersectionObserver' in window && sections.length){
+  const navObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        navLinks.forEach(link=>{
+          link.classList.toggle(
+            'is-current',
+            link.getAttribute('href')===`#${entry.target.id}`
+          );
+        });
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+
+  sections.forEach(section=>navObserver.observe(section));
 }
 
 renderFilters();
