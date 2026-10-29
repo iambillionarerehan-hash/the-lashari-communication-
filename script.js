@@ -494,6 +494,61 @@ if('IntersectionObserver' in window && sections.length){
 renderFilters();
 renderProducts();
 
+/* ── MOUSE-FOLLOW CURSOR GLOW ── */
+(function setupCursorGlow(){
+  /* Only on devices that can hover (laptop/desktop) */
+  if(!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  /* Create glow element */
+  const glow = document.createElement('div');
+  glow.id = 'cursor-glow';
+  document.body.appendChild(glow);
+
+  /* Sections where glow should be VISIBLE */
+  const glowSections = ['.hero', '.collection-section', '.closing-section', '.brand-section'];
+
+  let mouseX = -999, mouseY = -999;
+  let raf = null;
+  let visible = false;
+
+  /* Smooth follow using rAF */
+  let curX = -999, curY = -999;
+
+  function tick(){
+    const dx = mouseX - curX;
+    const dy = mouseY - curY;
+    curX += dx * 0.1;
+    curY += dy * 0.1;
+    glow.style.left = curX + 'px';
+    glow.style.top  = curY + 'px';
+    raf = requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    /* Check if cursor is over a glow section */
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    const inSection = el && glowSections.some(sel => el.closest(sel));
+
+    if(inSection && !visible){
+      visible = true;
+      glow.style.opacity = '1';
+      if(!raf) tick();
+    } else if(!inSection && visible){
+      visible = false;
+      glow.style.opacity = '0';
+    }
+  });
+
+  document.addEventListener('mouseleave', () => {
+    visible = false;
+    glow.style.opacity = '0';
+  });
+})();
+
 /* BRAND GRID */
 const brands = [
   { name:'iPhone',  symbol:'',  svg:true  },
