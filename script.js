@@ -46,10 +46,15 @@ const bagDialog=document.querySelector('#bagDialog');
 let activeGroup='All';
 let favoritesOnly=false;
 let saved=new Set();
+let cartItems=new Set();
+let qtyMap={};
 
-try {
-  saved=new Set(JSON.parse(localStorage.getItem('xcess-favorites')||'[]'));
-} catch {}
+try { saved=new Set(JSON.parse(localStorage.getItem('xcess-favorites')||'[]')); } catch {}
+try { cartItems=new Set(JSON.parse(localStorage.getItem('xcess-cart')||'[]')); } catch {}
+try { qtyMap=JSON.parse(localStorage.getItem('xcess-qty')||'{}'); } catch {}
+
+function getQty(id){ return qtyMap[id]||1; }
+function setQty(id,v){ qtyMap[id]=Math.max(1,v); try{localStorage.setItem('xcess-qty',JSON.stringify(qtyMap));}catch{} }
 
 document.querySelector('#heroWatch').innerHTML=artwork('watch');
 document.querySelector('#heroEarbuds').innerHTML=artwork('earbuds');
@@ -86,39 +91,52 @@ function renderProducts(){
     &&(`${p.name} ${p.group} ${p.caption}`.toLowerCase().includes(term))
   );
 
-  productGrid.innerHTML=visible.map((p,index)=>`
+  productGrid.innerHTML=visible.map((p,index)=>{
+    const qty=getQty(p.id);
+    return `
     <article class="product-card" data-id="${p.id}" style="--card-bg:${p.bg}">
+
       <div class="product-media">
         <span class="product-topline">
           ${String(index+1).padStart(2,'0')} / ${p.group.toUpperCase()}
         </span>
-
         <button
           class="heart-button ${saved.has(p.id)?'is-saved':''}"
           data-save="${p.id}"
-          aria-label="${saved.has(p.id)?'Remove':'Save'} ${p.name} ${saved.has(p.id)?'from':'to'} favorites"
+          aria-label="${saved.has(p.id)?'Remove':'Save'} ${p.name}"
           aria-pressed="${saved.has(p.id)}">
           ${heartIcon}
         </button>
-
         ${artwork(p.art)}
       </div>
 
-      <div class="product-info">
-        <div>
-          <h3>${p.name}</h3>
-          <p>${p.caption}</p>
+      <div class="product-info-block">
+        <h3 class="product-name">${p.name}</h3>
+        <p class="product-caption">${p.caption}</p>
+
+        <div class="product-stars" aria-label="4.5 out of 5 stars">
+          <span class="stars-filled">★★★★★</span>
+          <span class="stars-count">(${Math.floor(Math.random()*120+30)})</span>
         </div>
 
-        <button
-          class="explore-button"
-          data-open="${p.id}"
-          aria-label="Explore ${p.name}">
-          ↗
-        </button>
+        <div class="product-qty-row">
+          <button class="qty-btn" data-qty-dec="${p.id}" aria-label="Decrease quantity">−</button>
+          <span class="qty-value" id="qty-${p.id}">${qty}</span>
+          <button class="qty-btn" data-qty-inc="${p.id}" aria-label="Increase quantity">+</button>
+        </div>
+
+        <div class="product-actions">
+          <button class="btn-buy-now" data-buy="${p.id}">
+            Buy Now
+          </button>
+          <button class="btn-add-cart ${cartItems.has(p.id)?'in-cart':''}" data-cart="${p.id}">
+            ${cartItems.has(p.id)?'✓ Added':'Add to Cart'}
+          </button>
+        </div>
       </div>
-    </article>
-  `).join('');
+
+    </article>`;
+  }).join('');
 
   emptyState.hidden=visible.length>0;
 
@@ -181,28 +199,121 @@ categoryStrip.addEventListener('click',e=>{
 });
 
 productGrid.addEventListener('click',e=>{
-  const save=e.target.closest('[data-save]');
 
+  /* SAVE / HEART */
+  const save=e.target.closest('[data-save]');
   if(save){
     const id=save.dataset.save;
     const item=products.find(p=>p.id===id);
     const wasSaved=saved.has(id);
-
     wasSaved?saved.delete(id):saved.add(id);
-
-    try {
-      localStorage.setItem('xcess-favorites',JSON.stringify([...saved]));
-    } catch {}
-
+    try{ localStorage.setItem('xcess-favorites',JSON.stringify([...saved])); }catch{}
     renderProducts();
     showToast(wasSaved?`Removed ${item.name} from favorites`:`Saved ${item.name} to favorites ✓`);
     return;
   }
 
-  const open=e.target.closest('[data-open]');
+  /* QTY DEC */
+  const dec=e.target.closest('[data-qty-dec]');
+  if(dec){
+    const id=dec.dataset.qtyDec;
+    const newVal=Math.max(1,getQty(id)-1);
+    setQty(id,newVal);
+    const el=document.getElementById('qty-'+id);
+    if(el)el.textContent=newVal;
+    return;
+  }
 
+  /* QTY INC */
+  const inc=e.target.closest('[data-qty-inc]');
+  if(inc){
+    const id=inc.dataset.qtyInc;
+    const newVal=getQty(id)+1;
+    setQty(id,newVal);
+    const el=document.getElementById('qty-'+id);
+    if(el)el.textContent=newVal;
+    return;
+  }
+
+  /* ADD TO CART */
+  const cart=e.target.closest('[data-cart]');
+  if(cart){
+    const id=cart.dataset.cart;
+    const item=products.find(p=>p.id===id);
+    const wasIn=cartItems.has(id);
+    if(!wasIn){
+      cartItems.add(id);
+      bagCount+=getQty(id);
+      bagCountEl.textContent=bagCount;
+      try{
+        localStorage.setItem('xcess-cart',JSON.stringify([...cartItems]));
+        localStorage.setItem('xcess-bag-count',String(bagCount));
+      }catch{}
+      cart.textContent='✓ Added';
+      cart.classList.add('in-cart');
+      showToast(`${item.name} added to cart ✓`);
+    } else {
+      showToast(`${item.name} already in cart`);
+    }
+    return;
+  }
+
+  /* BUY NOW */
+  const buy=e.target.closest('[data-buy]');
+  if(buy){
+    openOrderDialog(buy.dataset.buy);
+    return;
+  }
+
+  /* QUICK VIEW (explore button) */
+  const open=e.target.closest('[data-open]');
   if(open)openProduct(open.dataset.open);
 });
+
+/* ORDER DIALOG */
+const orderDialog=document.querySelector('#orderDialog');
+const orderForm=document.querySelector('#orderForm');
+const orderSuccess=document.querySelector('#orderSuccess');
+
+function openOrderDialog(id){
+  const p=products.find(item=>item.id===id);
+  if(!p||!orderDialog)return;
+  document.querySelector('#orderProductName').textContent=p.name;
+  document.querySelector('#orderProductQty').textContent=`Quantity: ${getQty(p.id)}`;
+  document.querySelector('#orderArt').innerHTML=artwork(p.art);
+  document.querySelector('#orderArt').style.background=p.bg;
+  orderForm.dataset.productId=p.id;
+  orderForm.dataset.productName=p.name;
+  orderForm.hidden=false;
+  orderSuccess.hidden=true;
+  orderDialog.showModal();
+}
+
+if(orderForm){
+  orderForm.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=document.querySelector('#orderName').value.trim();
+    const phone=document.querySelector('#orderPhone').value.trim();
+    const address=document.querySelector('#orderAddress').value.trim();
+    const payment=document.querySelector('input[name="payment"]:checked')?.value||'Cash on Delivery';
+    const product=orderForm.dataset.productName;
+    const qty=getQty(orderForm.dataset.productId);
+    if(!name||!phone||!address){ showToast('Please fill all required fields'); return; }
+    /* WhatsApp message */
+    const msg=encodeURIComponent(
+      `*New Order — XCESS*\n\nProduct: ${product}\nQty: ${qty}\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nPayment: ${payment}`
+    );
+    window.open(`https://wa.me/923144494605?text=${msg}`,'_blank');
+    orderForm.hidden=true;
+    orderSuccess.hidden=false;
+    orderForm.reset();
+  });
+}
+
+document.querySelectorAll('[data-close-order]').forEach(btn=>
+  btn.addEventListener('click',()=>orderDialog?.close())
+);
+orderDialog?.addEventListener('click',e=>{ if(e.target===orderDialog)orderDialog.close(); });
 
 function openProduct(id){
   const p=products.find(item=>item.id===id);

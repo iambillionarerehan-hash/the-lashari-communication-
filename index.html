@@ -516,6 +516,80 @@
     </div>
   </dialog>
 
+  <!-- ORDER MODAL -->
+  <dialog id="orderDialog" class="order-dialog">
+    <div class="order-header">
+      <h3>Place Your Order</h3>
+      <button class="dialog-close" data-close-order aria-label="Close">×</button>
+    </div>
+
+    <div class="order-product-strip">
+      <div class="order-product-art" id="orderArt"></div>
+      <div>
+        <div class="order-product-name" id="orderProductName"></div>
+        <div class="order-product-qty" id="orderProductQty"></div>
+      </div>
+    </div>
+
+    <form class="order-form" id="orderForm" novalidate>
+
+      <div class="order-field">
+        <label for="orderName">Your Name</label>
+        <input type="text" id="orderName" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="order-field">
+        <label for="orderPhone">Phone Number</label>
+        <input type="tel" id="orderPhone" placeholder="+92 3XX XXXXXXX" required>
+      </div>
+
+      <div class="order-field">
+        <label for="orderEmail">Email Address</label>
+        <input type="email" id="orderEmail" placeholder="your@email.com">
+      </div>
+
+      <div class="order-field">
+        <label for="orderAddress">Delivery Address</label>
+        <textarea id="orderAddress" placeholder="Street, Area, City, Province" required></textarea>
+      </div>
+
+      <div class="order-field">
+        <label>Payment Method</label>
+        <div class="payment-options">
+          <div class="payment-option">
+            <input type="radio" name="payment" id="payCOD" value="Cash on Delivery" checked>
+            <label for="payCOD">
+              <span class="pay-icon">💵</span>
+              <span class="pay-title">Cash on Delivery</span>
+              <span class="pay-sub">Pay when you receive</span>
+            </label>
+          </div>
+          <div class="payment-option">
+            <input type="radio" name="payment" id="payAdvance" value="Advance Payment">
+            <label for="payAdvance">
+              <span class="pay-icon">💳</span>
+              <span class="pay-title">Advance Payment</span>
+              <span class="pay-sub">Transfer before dispatch</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="order-submit">
+        Confirm Order ↗
+      </button>
+    </form>
+
+    <div class="order-success" id="orderSuccess">
+      <div class="order-success-icon">✓</div>
+      <h3>Order Placed!</h3>
+      <p>Shukriya! Aapka order receive ho gaya. Hum jald hi aapse contact karenge.</p>
+      <button class="button button-dark" data-close-order>
+        Keep exploring <span>↗</span>
+      </button>
+    </div>
+  </dialog>
+
   <!-- SHOPPING BAG MODAL -->
   <dialog id="bagDialog" class="site-dialog bag-dialog">
 
