@@ -8,6 +8,9 @@ const products = [
   {id:'adapters',name:'Adapters',group:'Everyday',caption:'Connect with ease.',description:'Explore handy adapters for everyday tech setups.',emoji:'▣',bg:'#e6e5df',art:'adapter'},
   {id:'speakers',name:'Speakers',group:'Audio',caption:'Turn the volume up.',description:'Discover speakers to take your sound wherever you go.',emoji:'◉',bg:'#d7dfd3',art:'speaker'},
   {id:'ringlight',name:'LED Ring Light',group:'Style',caption:'Light up your shot.',description:'Explore LED ring lights with stands for perfect content and calls.',emoji:'◯',bg:'#e9ece2',art:'ringlight'},
+  {id:'deskholder',name:'Desk Mobile Holders',group:'Holders',caption:'Hands-free, always.',description:'Explore desk stand holders to keep your phone upright for calls and videos.',emoji:'⊥',bg:'#e3e6dc',art:'deskholder'},
+  {id:'carholder',name:'Car Mobile Holders',group:'Holders',caption:'Drive. Don’t fumble.',description:'Explore car mount holders that keep your phone secure on every drive.',emoji:'⌾',bg:'#dde3da',art:'carholder'},
+  {id:'bikeholder',name:'Bike Mobile Holders',group:'Holders',caption:'Ride with your phone in view.',description:'Explore bike mount holders built for a secure grip on every ride.',emoji:'⊙',bg:'#e1e4db',art:'bikeholder'},
   {id:'covers',name:'Mobile Covers',group:'Style',caption:'Make it your own.',description:'Explore mobile covers that add personality and everyday protection.',emoji:'▯',bg:'#d6e1da',art:'cover'}
 ];
 
@@ -21,6 +24,9 @@ const art = {
   adapter:`<div class="art-object adapter-object"><div class="adapter-body"></div><div class="adapter-socket"></div></div>`,
   speaker:`<div class="art-object speaker-object"><div class="speaker-body"></div><div class="speaker-grill"></div><div class="speaker-mark">x.</div><div class="speaker-top"></div></div>`,
   ringlight:`<div class="art-object ringlight-object"><div class="ringlight-stand"></div><div class="ringlight-ring"><div class="ringlight-phone"></div></div></div>`,
+  deskholder:`<div class="art-object deskholder-object"><div class="deskholder-base"></div><div class="deskholder-arm"></div><div class="deskholder-clip"><div class="deskholder-phone"></div></div></div>`,
+  carholder:`<div class="art-object carholder-object"><div class="carholder-vent"></div><div class="carholder-arm"></div><div class="carholder-clip"><div class="carholder-phone"></div></div></div>`,
+  bikeholder:`<div class="art-object bikeholder-object"><div class="bikeholder-bar"></div><div class="bikeholder-mount"></div><div class="bikeholder-clip"><div class="bikeholder-phone"></div></div></div>`,
   cover:`<div class="art-object cover-object"><div class="cover-shell"></div><div class="cover-camera"><i></i><i></i></div></div>`
 };
 
@@ -59,7 +65,7 @@ function updateFavoritesCount(){
 }
 
 function renderFilters(){
-  const groups=['All','Audio','Power','Wearables','Everyday','Style'];
+  const groups=['All','Audio','Power','Wearables','Everyday','Holders','Style'];
 
   filters.innerHTML=groups.map(group=>`
     <button
@@ -376,3 +382,50 @@ if('IntersectionObserver' in window && sections.length){
 
 renderFilters();
 renderProducts();
+
+/* BRAND GRID */
+const brands = [
+  { name:'iPhone',  symbol:'',  svg:true  },
+  { name:'Samsung', symbol:'S', svg:false },
+  { name:'OnePlus', symbol:'1+',svg:false },
+  { name:'Xiaomi',  symbol:'Mi',svg:false },
+  { name:'Oppo',    symbol:'O', svg:false },
+  { name:'Vivo',    symbol:'V', svg:false },
+  { name:'Honor',   symbol:'H', svg:false },
+  { name:'Huawei',  symbol:'HW',svg:false },
+  { name:'Realme',  symbol:'R', svg:false },
+  { name:'Tecno',   symbol:'T', svg:false },
+  { name:'Infinix', symbol:'∞', svg:false },
+  { name:'Pixel',   symbol:'G', svg:false },
+  { name:'Motorola',symbol:'M', svg:false },
+  { name:'Nothing', symbol:'N', svg:false },
+  { name:'iQOO',    symbol:'iQ',svg:false },
+  { name:'Itel',    symbol:'it',svg:false }
+];
+
+const appleSvg=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 3.5c-1.6 1.7-4.2 2.1-5.9.4C8.8 2.2 9.1-.4 10.8-1.6" stroke-linecap="round"/><path d="M17.2 8.8C15.2 10 14 12.2 14 14.5c0 2.7 1.8 5 4.4 5.8" stroke-linecap="round"/><path d="M6 21.5c1.4 0 2.8-.5 3.8-1.5C11 18.8 12 17 12 15s-1-3.8-2.2-5C8.6 8.8 7 8 5.4 8c-1 0-2 .3-2.9.8C1.6 9.5 1 10.7 1 12c0 3 1.7 5.9 3.5 7.8.8.9 1.6 1.7 2.5 1.7Z" stroke-linecap="round"/></svg>`;
+
+const brandGrid=document.querySelector('#brandGrid');
+if(brandGrid){
+  brandGrid.innerHTML=brands.map(b=>`
+    <div class="brand-card" role="button" tabindex="0" aria-label="${b.name} covers">
+      <div class="brand-logo">
+        ${b.svg ? appleSvg : `<span class="brand-logo-text">${b.symbol}</span>`}
+      </div>
+      <span class="brand-name">${b.name}</span>
+    </div>
+  `).join('');
+
+  brandGrid.addEventListener('click',e=>{
+    const card=e.target.closest('.brand-card');
+    if(!card)return;
+    const name=card.querySelector('.brand-name').textContent;
+    showToast(`${name} covers — coming soon! ✓`);
+  });
+  brandGrid.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      const card=e.target.closest('.brand-card');
+      if(card)card.click();
+    }
+  });
+}

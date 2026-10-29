@@ -988,6 +988,170 @@ svg {
   background: #263029;
 }
 
+/* DESK MOBILE HOLDER */
+.deskholder-object { width: 175px; height: 195px; transform: rotate(-15deg) rotateY(-14deg); }
+.deskholder-base {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 135px;
+  height: 16px;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #4b5650, #1c211e);
+  box-shadow: 10px 12px 14px #0005;
+}
+.deskholder-arm {
+  position: absolute;
+  bottom: 12px;
+  left: 68px;
+  width: 12px;
+  height: 95px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #3a433e, #171a18);
+  transform: rotate(-6deg);
+}
+.deskholder-clip {
+  position: absolute;
+  top: 0;
+  left: 28px;
+  width: 120px;
+  height: 92px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #565f59, #23282533);
+  padding: 10px;
+}
+.deskholder-clip:before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 10px;
+  border: 7px solid #2a3330;
+}
+.deskholder-phone {
+  position: absolute;
+  inset: 13px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #eef4ee, #9fb2b0 60%, #6c827f);
+  box-shadow: inset 0 0 0 2px #ffffff80;
+}
+
+/* CAR MOBILE HOLDER */
+.carholder-object { width: 175px; height: 210px; transform: rotate(-13deg) rotateY(-16deg); }
+.carholder-vent {
+  position: absolute;
+  bottom: 0;
+  left: 15px;
+  width: 110px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #3c4640, #171b19);
+  box-shadow: 10px 12px 15px #0005;
+}
+.carholder-vent:before, .carholder-vent:after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  height: 4px;
+  border-radius: 2px;
+  background: #0b0d0c;
+}
+.carholder-vent:before { top: 13px; }
+.carholder-vent:after { top: 25px; }
+.carholder-arm {
+  position: absolute;
+  bottom: 38px;
+  left: 60px;
+  width: 11px;
+  height: 90px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #4a554e, #1d2220);
+  transform: rotate(10deg);
+}
+.carholder-clip {
+  position: absolute;
+  top: 0;
+  left: 25px;
+  width: 125px;
+  height: 100px;
+  border-radius: 50px 50px 18px 18px;
+  background: linear-gradient(135deg, #596159, #262b2866);
+  padding: 9px;
+  transform: rotate(-4deg);
+}
+.carholder-clip:before {
+  content: '';
+  position: absolute;
+  inset: 9px 16px;
+  border-radius: 40px 40px 10px 10px;
+  border: 7px solid #2a3330;
+}
+.carholder-phone {
+  position: absolute;
+  inset: 16px 23px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #eef4ee, #9fb2b0 60%, #6c827f);
+  box-shadow: inset 0 0 0 2px #ffffff80;
+}
+
+/* BIKE MOBILE HOLDER */
+.bikeholder-object { width: 180px; height: 195px; transform: rotate(-11deg) rotateY(-15deg); }
+.bikeholder-bar {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  width: 170px;
+  height: 22px;
+  border-radius: 11px;
+  background: linear-gradient(100deg, #2b322e, #565f59 45%, #222825);
+  box-shadow: 10px 12px 14px #0005;
+}
+.bikeholder-mount {
+  position: absolute;
+  bottom: 24px;
+  left: 62px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4a554e, #1d2220);
+  box-shadow: inset 0 0 0 2px #6c7a72;
+}
+.bikeholder-clip {
+  position: absolute;
+  top: 0;
+  left: 22px;
+  width: 128px;
+  height: 100px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #596159, #262b2866);
+  padding: 9px;
+}
+.bikeholder-clip:before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 12px;
+  border: 7px solid #2a3330;
+}
+.bikeholder-clip:after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 16px;
+  border-radius: 4px;
+  background: #1d2220;
+}
+.bikeholder-phone {
+  position: absolute;
+  inset: 15px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #eef4ee, #9fb2b0 60%, #6c827f);
+  box-shadow: inset 0 0 0 2px #ffffff80;
+}
+
 /* MOBILE COVER */
 .cover-object { width: 145px; height: 226px; transform: rotate(-21deg) rotateY(-17deg); }
 .cover-shell {
@@ -1402,6 +1566,384 @@ svg {
 .desktop-nav a.is-current,
 .mobile-nav a.is-current { color: #6c8b0d; }
 .desktop-nav a.is-current:after { right: 0; background: #6c8b0d; }
+
+/* BRAND SECTION */
+.brand-section { background: var(--cream); }
+.brand-heading { margin-bottom: 44px; }
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 14px;
+}
+.brand-card {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  text-align: center;
+}
+.brand-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px #1a2a1c18;
+  border-color: #b8c98a;
+}
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--cream);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 800;
+  font-family: var(--display);
+  letter-spacing: -.04em;
+  color: var(--ink);
+  overflow: hidden;
+}
+.brand-logo svg { width: 28px; height: 28px; fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.brand-logo-text { font-size: 13px; font-weight: 800; }
+.brand-name {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+/* FOOTER LOCATION + CONTACT */
+.footer-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 18px;
+  color: #92a094;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.footer-location-icon { flex-shrink: 0; margin-top: 2px; }
+.footer-location-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #6a8b6e;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.footer-contact-heading {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: #6a8060;
+  text-transform: uppercase;
+}
+.footer-contact-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  color: #92a094;
+  transition: color .2s;
+  line-height: 1.4;
+}
+.footer-contact-link:hover { color: var(--lime); }
+.footer-contact-link svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  flex-shrink: 0;
+}
+.footer-social {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.footer-social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid #2a3a2c;
+  display: grid;
+  place-items: center;
+  color: #92a094;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.footer-social a:hover { border-color: var(--lime); color: var(--lime); background: #1a261b; }
+.footer-social svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+/* DESK HOLDER */
+.deskholder-object { width: 150px; height: 210px; transform: rotate(-15deg) rotateY(-14deg); }
+.deskholder-base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #3a4440, #1b2220);
+  box-shadow: 0 8px 16px #0004;
+}
+.deskholder-base:before {
+  content: '';
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 60px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #4a5550, #2a3330);
+  box-shadow: 6px 8px 12px #0003;
+}
+.deskholder-arm {
+  position: absolute;
+  bottom: 74px;
+  left: 50%;
+  transform: translateX(-50%) rotate(10deg);
+  width: 6px;
+  height: 90px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #525d58, #2c3835);
+  box-shadow: 5px 7px 10px #0004;
+}
+.deskholder-clip {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 16px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #5a6a60, #3a4844);
+  box-shadow: 4px 6px 10px #0003;
+}
+.deskholder-clip:before,
+.deskholder-clip:after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 14px;
+  height: 24px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #6a7a70, #4a5550);
+}
+.deskholder-clip:before { left: 2px; }
+.deskholder-clip:after { right: 2px; }
+.deskholder-phone {
+  position: absolute;
+  top: -85px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 92px;
+  border-radius: 11px;
+  background: linear-gradient(140deg, #d0dbd4, #8a9f9a);
+  box-shadow: inset 0 0 0 2px #ffffff80, 6px 10px 14px #1b2b2660;
+}
+.deskholder-phone:before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 4px;
+  border-radius: 3px;
+  background: #5a6a65;
+}
+
+/* CAR HOLDER */
+.carholder-object { width: 155px; height: 200px; transform: rotate(-14deg) rotateY(-12deg); }
+.carholder-vent {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 52px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #2a3330, #111817);
+  box-shadow: 0 8px 18px #0005;
+}
+.carholder-vent:before,
+.carholder-vent:after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 5px;
+  border-radius: 3px;
+  background: #3a4440;
+}
+.carholder-vent:before { top: 13px; }
+.carholder-vent:after { top: 26px; }
+.carholder-arm {
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 55px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #5a6a65, #2c3835);
+  box-shadow: 4px 7px 10px #0003;
+}
+.carholder-clip {
+  position: absolute;
+  bottom: 104px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 18px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #4a5a55, #2e3c38);
+  box-shadow: 4px 6px 10px #0004;
+}
+.carholder-clip:before,
+.carholder-clip:after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  width: 16px;
+  height: 30px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #6a7a72, #42524e);
+  box-shadow: 3px 4px 6px #0003;
+}
+.carholder-clip:before { left: 2px; }
+.carholder-clip:after { right: 2px; }
+.carholder-phone {
+  position: absolute;
+  bottom: 118px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 58px;
+  height: 94px;
+  border-radius: 12px;
+  background: linear-gradient(140deg, #ccd8d2, #85999490);
+  box-shadow: inset 0 0 0 2px #ffffff80, 5px 9px 14px #1a2a2660;
+}
+.carholder-phone:before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 4px;
+  border-radius: 3px;
+  background: #5a6860;
+}
+
+/* BIKE HOLDER */
+.bikeholder-object { width: 180px; height: 165px; transform: rotate(-12deg) rotateY(-13deg); }
+.bikeholder-bar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 22px;
+  transform: translateY(-50%);
+  border-radius: 11px;
+  background: linear-gradient(180deg, #4a5550, #2a3330);
+  box-shadow: 0 8px 16px #0005, inset 0 3px 0 #6a7a70;
+}
+.bikeholder-mount {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5a6a62, #2e3c38);
+  box-shadow: 0 5px 12px #0005, inset 0 2px 0 #7a8a80;
+  z-index: 2;
+}
+.bikeholder-mount:before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3a4844, #1e2a26);
+  box-shadow: inset 0 2px 3px #0004;
+}
+.bikeholder-clip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 16px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #4e5e58, #2e3c38);
+  box-shadow: 3px 5px 10px #0004;
+  z-index: 3;
+  margin-top: 30px;
+}
+.bikeholder-clip:before,
+.bikeholder-clip:after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  width: 13px;
+  height: 26px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #657568, #3e4e48);
+}
+.bikeholder-clip:before { left: 2px; }
+.bikeholder-clip:after { right: 2px; }
+.bikeholder-phone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 88px;
+  border-radius: 11px;
+  background: linear-gradient(140deg, #c8d5ce, #809690);
+  box-shadow: inset 0 0 0 2px #ffffff70, 4px 8px 12px #1a2a2260;
+  z-index: 3;
+  margin-top: 72px;
+}
+.bikeholder-phone:before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 4px;
+  border-radius: 3px;
+  background: #5a6660;
+}
+
+/* RESPONSIVE brand grid */
+@media (max-width: 1150px) { .brand-grid { grid-template-columns: repeat(6, 1fr); } }
+@media (max-width: 800px)  { .brand-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 550px)  { .brand-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; } .brand-card { padding: 12px 6px 10px; border-radius: 11px; } .brand-logo { width: 38px; height: 38px; border-radius: 9px; } .brand-name { font-size: 8px; } }
 
 /* ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
